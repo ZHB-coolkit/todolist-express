@@ -1,0 +1,61 @@
+// test.http
+@url=http://localhost:3000/v1
+@token=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNWY5ZDMwNjI4MWNhMDQ4MGQ3YzE3MSIsImV4cCI6MTY2NzI5MjE1MDc1MCwiaWF0IjoxNjY3MjkyMDkwfQ.MkHaSlgIPyfH3XLmT0TEQj0K4KwK9n1vsxPAcOFUcgQ
+@type=application/json
+
+### 用户注册
+POST {{url}}/user
+Content-Type: {{ type }}
+
+{
+    "username": "admin",
+    "password": "dd7a6c4edc68e683b700a7a2846a2bc6"
+}
+
+
+### 用户登录
+POST {{url}}/user/login
+Content-Type: {{ type }}
+
+{
+    "username": "user2",
+    "password": "123456"
+}
+
+
+### 新增 todo
+POST {{url}}/todo
+Content-Type: {{ type }}
+Authorization: {{ token }}
+
+{
+    "content": "测试内容209866443"
+}
+
+
+### 获取 todo list
+get {{url}}/todo/list
+Authorization: {{ token }}
+
+### 编辑 todo
+PUT {{url}}/todo/6360dc5b574ba811bdef3f7b
+Content-Type: {{ type }}
+Authorization: {{ token }}
+
+{
+    "content": "测试内容1222222222222222"
+}
+
+### 更新 todo 状态
+PUT {{url}}/todo/6360dc5b574ba811bdef3f7b
+Content-Type: {{ type }}
+Authorization: {{ token }}
+
+{
+    "status": "2"
+}
+
+### 软删除
+DELETE {{url}}/todo/6360dc5b574ba811bdef3f7b
+Content-Type: {{ type }}
+Authorization: {{ token }}
