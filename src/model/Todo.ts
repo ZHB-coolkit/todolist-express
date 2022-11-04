@@ -1,4 +1,5 @@
 import mongoose from '../db/mongodb'
+import { ETodoStatus } from '../ts/enum/ETodo'
 
 const TodoSchema = new mongoose.Schema({
     content: {
@@ -7,7 +8,7 @@ const TodoSchema = new mongoose.Schema({
     },
     status: {
         type: Number,
-        default: 0
+        default: ETodoStatus.UNFINISHED
     },
     userId: {
         type: String,

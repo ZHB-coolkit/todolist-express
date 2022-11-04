@@ -1,38 +1,41 @@
 class BaseResult {
+    code: number = -1
     message: string = ''
     data: any
-    constructor(data: any, message?: string | null) {
-        if (typeof data === 'string') {
-            this.message = data
-            data = null
-            message = null
-        }
-        if (data) {
-            this.data = data
-        }
-        if (message) {
-            this.message = message
-        }
+    constructor(code: number, message?: string, data?: any) {
+        this.code = code
+        if (message) this.message = message
+        if (data) this.data = data
     }
 }
 
 class SuccessResult extends BaseResult {
-    code: number
     constructor(data?: any, message?: string) {
-        super(data, message)
-        this.code = 0
+        super(0, message, data)
     }
 }
 
 class ErrorResult extends BaseResult {
-    code: number
-    constructor(code: number, data: any, message?: string) {
-        super(data, message)
-        this.code = code
+    constructor(code: number, message?: string, data?: any) {
+        super(code, message, data)
+    }
+}
+
+class BadRequestErrorResult extends ErrorResult {
+    constructor(message?: string, data?: any) {
+        super(400, message, data)
+    }
+}
+
+class PermissionErrorResult extends ErrorResult {
+    constructor(message: string = 'Access without permission!', data?: any) {
+        super(401, message, data)
     }
 }
 
 export {
     SuccessResult,
-    ErrorResult
+    ErrorResult,
+    BadRequestErrorResult,
+    PermissionErrorResult
 }

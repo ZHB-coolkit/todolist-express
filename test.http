@@ -8,7 +8,7 @@ POST {{url}}/user
 Content-Type: {{ type }}
 
 {
-    "username": "admin",
+    "username": "admin111111",
     "password": "dd7a6c4edc68e683b700a7a2846a2bc6"
 }
 

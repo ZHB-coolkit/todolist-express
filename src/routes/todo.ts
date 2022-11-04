@@ -1,7 +1,7 @@
 import express from 'express'
 import _ from 'lodash'
 import TodoModel from '../model/Todo'
-import { SuccessResult, ErrorResult } from '../model/Result'
+import { SuccessResult, BadRequestErrorResult, PermissionErrorResult } from '../model/Result'
 import todoListGetSchema from '../schema/todo/todoListGetSchema'
 import todoPatchSchema from '../schema/todo/todoPatchSchema'
 import todoPostSchema from '../schema/todo/todoPostSchema'
@@ -20,13 +20,13 @@ router.post('/', loginCheck, async (req, res, next) => {
     const errors = todoPostSchema.validate({ content })
     if (errors.length) {
         const message = _.get(errors[0], 'message')
-        res.send(new ErrorResult(400, message))
+        res.send(new BadRequestErrorResult(message))
         return
     }
     
-    const userId = res.locals.userId    
+    const userId = res.locals.userId   
     if (!userId) {
-        res.send(new ErrorResult(401, 'Access without permission!'))
+        res.send(new PermissionErrorResult())
         return
     }
 
@@ -44,13 +44,13 @@ router.put('/:id', loginCheck, async (req, res, next) => {
     const errors = todoPutSchema.validate({ content })
     if (errors.length) {
         const message = _.get(errors[0], 'message')
-        res.send(new ErrorResult(400, message))
+        res.send(new BadRequestErrorResult(message))
         return
     }
 
     const userId = res.locals.userId    
     if (!userId) {
-        res.send(new ErrorResult(401, 'Access without permission!'))
+        res.send(new PermissionErrorResult())
         return
     }
 
@@ -60,7 +60,7 @@ router.put('/:id', loginCheck, async (req, res, next) => {
     }, 'userId')
     
     if (!todo) {
-        res.send(new ErrorResult(400, 'Data not found!'))
+        res.send(new BadRequestErrorResult('Data not found!'))
         return
     }
 
@@ -78,13 +78,13 @@ router.patch('/:id', loginCheck, async (req, res, next) => {
     const errors = todoPatchSchema.validate({ status })
     if (errors.length) {
         const message = _.get(errors[0], 'message')
-        res.send(new ErrorResult(400, message))
+        res.send(new BadRequestErrorResult(message))
         return
     }
 
     const userId = res.locals.userId    
     if (!userId) {
-        res.send(new ErrorResult(401, 'Access without permission!'))
+        res.send(new PermissionErrorResult())
         return
     }
 
@@ -94,7 +94,7 @@ router.patch('/:id', loginCheck, async (req, res, next) => {
     }, 'userId')
 
     if (!todo) {
-        res.send(new ErrorResult(400, 'Data not found!'))
+        res.send(new BadRequestErrorResult('Data not found!'))
         return
     }
 
@@ -109,7 +109,7 @@ router.delete('/:id', loginCheck, async (req, res, next) => {
 
     const userId = res.locals.userId    
     if (!userId) {
-        res.send(new ErrorResult(401, 'Access without permission!'))
+        res.send(new PermissionErrorResult())
         return
     }
 
@@ -123,7 +123,7 @@ router.delete('/:id', loginCheck, async (req, res, next) => {
     }, 'userId')
 
     if (!todo) {
-        res.send(new ErrorResult(400, 'Data not found!'))
+        res.send(new BadRequestErrorResult('Data not found!'))
         return
     }
 
@@ -140,13 +140,13 @@ router.get('/list', loginCheck, async (req, res, next) => {
     const errors = todoListGetSchema.validate({ keyword, status })
     if (errors.length) {
         const message = _.get(errors[0], 'message')
-        res.send(new ErrorResult(400, message))
+        res.send(new BadRequestErrorResult(message))
         return
     }
 
     const userId = res.locals.userId
     if (!userId) {
-        res.send(new ErrorResult(401, 'Access without permission!'))
+        res.send(new PermissionErrorResult())
         return
     }
     let filter
