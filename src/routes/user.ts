@@ -23,7 +23,7 @@ router.post('/', async (req, res, next) => {
   const { username, password } = req.body
   const user = await UserModel.findOne({ username }, '_id')
   if (user) {
-    res.send(new BadRequestErrorResult('该用户已存在！'))
+    res.send(new BadRequestErrorResult('This username already exists!'))
     return
   }
   const result = await UserModel.create({
@@ -53,13 +53,13 @@ router.post('/login', async (req, res, next) => {
   const { username, password } = req.body
   const user = await UserModel.findOne({ username }, '_id, password')
   if (!user) {
-    res.send(new BadRequestErrorResult('该用户不存在！'))
+    res.send(new BadRequestErrorResult('This user does not exist!'))
     return
   }
   
   const isPasswordValid = bcrypt.compareSync(password, user.password!)
   if (!isPasswordValid) {
-    res.send(new BadRequestErrorResult('密码不正确！'))
+    res.send(new BadRequestErrorResult('Incorrect password!'))
     return
   }
   const token = generateToken(user._id.toString())
