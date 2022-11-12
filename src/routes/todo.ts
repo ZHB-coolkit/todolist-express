@@ -64,7 +64,7 @@ router.put('/:id', loginCheck, async (req, res, next) => {
         return
     }
 
-    const result = await TodoModel.findByIdAndUpdate(id, { content })
+    const result = await TodoModel.findByIdAndUpdate(id, { content, updateTime: Date.now() })
     res.send(new SuccessResult(result))
 
 })
@@ -98,7 +98,7 @@ router.patch('/:id', loginCheck, async (req, res, next) => {
         return
     }
 
-    const result = await TodoModel.findByIdAndUpdate(id, { status: Number(status) })
+    const result = await TodoModel.findByIdAndUpdate(id, { status: Number(status), updateTime: Date.now() })
     res.send(new SuccessResult(result))
 })
 
@@ -127,7 +127,7 @@ router.delete('/:id', loginCheck, async (req, res, next) => {
         return
     }
 
-    const result = await TodoModel.findByIdAndUpdate(id, { status: ETodoStatus.DELETED })
+    const result = await TodoModel.findByIdAndUpdate(id, { status: ETodoStatus.DELETED, updateTime: Date.now() })
     res.send(new SuccessResult(result))
 })
 
